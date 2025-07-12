@@ -4,6 +4,33 @@
 
 [build.environment]
   NODE_VERSION = "18"
+  # Enable Next.js telemetry for better error reporting
+  NEXT_TELEMETRY_DISABLED = "1"
+  # Enable build caching
+  NEXT_CACHE = "true"
 
+# Configure build caching
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
+
+# Configure Next.js plugin
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+  
+# Add caching plugin
+[[plugins]]
+  package = "netlify-plugin-cache-nextjs"
