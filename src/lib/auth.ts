@@ -16,7 +16,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 const SECRET = new TextEncoder().encode(JWT_SECRET);
 const JWT_EXPIRES_IN = '1d';
 
-export async function signJwt(payload: JWTPayload) {
+export async function signJwt(payload: JWTPayload): Promise<string> {
   return await new SignJWT({ ...payload })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()

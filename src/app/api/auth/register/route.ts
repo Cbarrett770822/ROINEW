@@ -21,7 +21,8 @@ export async function POST(req: NextRequest) {
     const res = NextResponse.json({ user: { username: user.username, email: user.email, role: user.role } });
     res.cookies.set('token', token, { httpOnly: true, sameSite: 'lax', path: '/', maxAge: 60 * 60 * 24 });
     return res;
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
