@@ -7,10 +7,21 @@ if (!MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI environment variable');
 }
 
-let cached = (global as any).mongoose;
+interface MongooseCache {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+}
+
+// Define a type for the global object with mongoose property
+interface GlobalWithMongoose extends Global {
+  mongoose?: MongooseCache;
+}
+
+// Use the typed global object
+let cached: MongooseCache = (global as GlobalWithMongoose).mongoose || { conn: null, promise: null };
 
 if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
+  cached = (global as GlobalWithMongoose).mongoose = { conn: null, promise: null };
 }
 
 async function timeoutPromise<T>(promise: Promise<T>, ms: number): Promise<T> {
@@ -31,7 +42,7 @@ async function timeoutPromise<T>(promise: Promise<T>, ms: number): Promise<T> {
   });
 }
 
-export async function connectToDatabase() {
+export async function connectToDatabase(): Promise<typeof mongoose> {
   if (cached.conn) {
     console.log('[MongoDB] ✅ Using cached connection');
     return cached.conn;

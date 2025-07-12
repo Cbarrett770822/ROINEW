@@ -2,13 +2,20 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function DashboardPage() {
+interface User {
+  username: string;
+  role?: string;
+  userId?: string;
+  [key: string]: string | number | boolean | undefined;
+}
+
+export default function DashboardPage(): React.ReactElement {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchUser() {
+    async function fetchUser(): Promise<void> {
       const res = await fetch('/api/protected/hello');
       if (res.ok) {
         const data = await res.json();
