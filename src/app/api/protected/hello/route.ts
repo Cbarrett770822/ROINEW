@@ -1,11 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyJwt } from '@/lib/auth';
 
+// Define the JWT payload type
+interface JwtPayload {
+  userId: string;
+  username: string;
+  role: string;
+  [key: string]: any; // Allow for other properties
+}
+
 export async function GET(req: NextRequest) {
   const token = req.cookies.get('token')?.value;
-  const decoded = token ? verifyJwt(token) : null;
-  if (!decoded) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  
+  if (!token) {
+    return NextResponse.json({ error: 'Unauthorized - No token provided' }, { status: 401 });
   }
-  return NextResponse.json({ message: `Hello, ${decoded['username']}!`, user: decoded });
+  
+  const decoded = await verifyJwt(token) as JwtPayload | null;
+  
+  if (!decoded) {
+    return NextResponse.json({ error: 'Unauthorized - Invalid token' }, { status: 401 });
+  }
+  
+  return NextResponse.json({ 
+    message: `Hello, ${decoded.username}!`, 
+    user: decoded 
+  });
 }
