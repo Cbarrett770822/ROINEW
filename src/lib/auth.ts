@@ -1,16 +1,23 @@
-import jwt from 'jsonwebtoken';
+import { jwtVerify, SignJWT } from 'jose';
 import { NextRequest } from 'next/server';
 
+// Use TextEncoder to convert the secret to Uint8Array as required by jose
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const SECRET = new TextEncoder().encode(JWT_SECRET);
 const JWT_EXPIRES_IN = '1d';
 
-export function signJwt(payload: object) {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+export async function signJwt(payload: object) {
+  return await new SignJWT(payload)
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime(JWT_EXPIRES_IN)
+    .sign(SECRET);
 }
 
-export function verifyJwt(token: string) {
+export async function verifyJwt(token: string) {
   try {
-    return jwt.verify(token, JWT_SECRET);
+    const { payload } = await jwtVerify(token, SECRET);
+    return payload;
   } catch (e) {
     return null;
   }
