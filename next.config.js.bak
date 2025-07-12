@@ -1,0 +1,40 @@
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Enable React strict mode for better development experience
+  reactStrictMode: true,
+  
+  // Optimize for production builds
+  swcMinify: true,
+  
+  // Configure image domains for external images
+  images: {
+    domains: ['localhost'],
+  },
+  
+  // Add detailed logging for webpack in development
+  webpack: (config, { isServer, dev }) => {
+    if (dev) {
+      config.infrastructureLogging = {
+        level: 'verbose',
+        debug: true,
+      };
+    }
+    return config;
+  },
+  
+  // Add experimental features for better error handling
+  experimental: {
+    // Enhanced error overlay
+    enhancedErrorOverlay: true,
+    
+    // Improved logging
+    logging: {
+      level: 'verbose'
+    },
+    
+    // Improved error handling for server components
+    serverComponentsExternalPackages: [],
+  },
+};
+
+module.exports = nextConfig;
