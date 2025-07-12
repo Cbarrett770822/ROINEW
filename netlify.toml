@@ -3,7 +3,7 @@
   publish = ".next"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "16.20.0"
   # Enable Next.js telemetry for better error reporting
   NEXT_TELEMETRY_DISABLED = "1"
   # Enable build caching

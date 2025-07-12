@@ -4,7 +4,7 @@
   "private": true,
   "description": "ROI Warehouse Management System",
   "engines": {
-    "node": "18.x"
+    "node": "16.x"
   },
   "scripts": {
     "dev": "next dev",
