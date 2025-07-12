@@ -8,7 +8,7 @@ export interface JWTPayload {
   role?: string;
   iat?: number;
   exp?: number;
-  [key: string]: any; // Add index signature to allow any string key
+  [key: string]: string | number | boolean | undefined; // More specific index signature
 }
 
 // Use TextEncoder to convert the secret to Uint8Array as required by jose

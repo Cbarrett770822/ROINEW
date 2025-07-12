@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyJwt } from '@/lib/auth';
 
-export async function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest): Promise<NextResponse> {
   // Only protect API routes except for auth endpoints
   if (request.nextUrl.pathname.startsWith('/api') &&
       !request.nextUrl.pathname.startsWith('/api/auth')) {

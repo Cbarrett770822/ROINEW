@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyJwt, JWTPayload } from '@/lib/auth';
+import { verifyJwt } from '@/lib/auth';
 
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest): Promise<NextResponse> {
   const token = req.cookies.get('token')?.value;
   
   if (!token) {
