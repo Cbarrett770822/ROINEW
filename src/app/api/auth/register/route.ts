@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { signJwt } from '@/lib/auth';
+import { signJwt, JWTPayload } from '@/lib/auth';
 import { connectToDatabase } from '@/lib/mongodb';
 import User from '@/models/user';
 
